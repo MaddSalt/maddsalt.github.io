@@ -15,6 +15,7 @@
     text-align: center;
     font-size: 48px;
     font-weight: bold;
+    display: none;
   }
 </style>
 
@@ -44,7 +45,6 @@ var x = setInterval(function() {
   // Display the result in the element with id="demo"
   document.getElementById("demo").innerHTML = days + "d " + hours + "h "
   + minutes + "m " + seconds + "s ";
-  document.getElementById("postCountdown").style.display = "none";
 
   // If the count down is finished, write some text
   if (distance < 0) {
