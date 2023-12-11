@@ -7,39 +7,44 @@
 </head>
 <body>
     <div class="wrapper">
-        <div class="typing-demo">
+        <div class="typewriter">
           It's advent time and it's going to blow your mind. The advent is hidden safe and sound and not just lying around. Now search high and low and in between too because your brother has hidden it from you.
         </div>
     </div>
     <style>
-    .wrapper {
-        height: 100vh;
-        /*This part is important for centering*/
-        display: grid;
-        place-items: center;
-      }
-      
-      .typing-demo {
-        width: 22ch;
-        animation: typing 2s steps(50), blink .5s step-end infinite alternate;
-        white-space: nowrap;
-        overflow: hidden;
-        border-right: 3px solid;
-        font-family: monospace;
-        font-size: 2em;
-      }
-      
-      @keyframes typing {
-        from {
-          width: 0
-        }
-      }
-          
-      @keyframes blink {
-        50% {
-          border-color: transparent
-        }
-      }
+    /* GLOBAL STYLES */
+body {
+  background: #333;
+  padding-top: 5em;
+  display: flex;
+  justify-content: center;
+}
+
+/* DEMO-SPECIFIC STYLES */
+.typewriter h1 {
+  color: #fff;
+  font-family: monospace;
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  border-right: .15em solid orange; /* The typwriter cursor */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: .15em; /* Adjust as needed */
+  animation: 
+    typing 3.5s steps(30, end),
+    blink-caret .5s step-end infinite;
+}
+
+/* The typing effect */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: orange }
+}
       </style>
 </body>
 </html>
