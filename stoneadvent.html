@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stone's Advent</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="typing-demo">
+          It's advent time and it's going to blow your mind. The advent is hidden safe and sound and not just lying around. Now search high and low and in between too because your brother has hidden it from you.
+        </div>
+    </div>
+    <style>
+    .wrapper {
+        height: 100vh;
+        /*This part is important for centering*/
+        display: grid;
+        place-items: center;
+      }
+      
+      .typing-demo {
+        width: 22ch;
+        animation: typing 2s steps(22), blink .5s step-end infinite alternate;
+        white-space: nowrap;
+        overflow: hidden;
+        border-right: 3px solid;
+        font-family: monospace;
+        font-size: 2em;
+      }
+      
+      @keyframes typing {
+        from {
+          width: 0
+        }
+      }
+          
+      @keyframes blink {
+        50% {
+          border-color: transparent
+        }
+      }
+      </style>
+</body>
+</html>
