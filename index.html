@@ -1,11 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MaddSalt</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christmas Countdown</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #f9d71c;
+            --snow-white: rgba(255, 255, 255, 0.8);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #00152b 0%, #003366 100%);
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        /* --- Sleigh Animation --- */
+        .sleigh {
+            position: absolute;
+            top: 15%;
+            font-size: 4rem;
+            z-index: 10;
+            white-space: nowrap;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            animation: flyAcross 12s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes flyAcross {
+            0% { left: -20%; transform: rotate(-5deg); }
+            25% { transform: translateY(-30px) rotate(0deg); }
+            50% { transform: translateY(0px) rotate(5deg); }
+            75% { transform: translateY(-30px) rotate(0deg); }
+            100% { left: 120%; transform: rotate(-5deg); }
+        }
+
+        /* --- Parallax Snow --- */
+        .snow-layer {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0));
+            background-repeat: repeat;
+        }
+
+        .layer1 { background-size: 200px 200px; animation: fall 10s linear infinite; opacity: 0.8; }
+        .layer2 { background-size: 300px 300px; animation: fall 15s linear infinite; opacity: 0.5; }
+        .layer3 { background-size: 500px 500px; animation: fall 20s linear infinite; opacity: 0.3; }
+
+        @keyframes fall {
+            from { background-position: 0 0; }
+            to { background-position: 100px 1000px; }
+        }
+
+        /* --- Countdown Container --- */
+        .container {
+            text-align: center;
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 3rem;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+
+        h1 {
+            font-family: 'Mountains of Christmas', cursive;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #e63946;
+            text-shadow: 2px 2px 0px #fff;
+        }
+
+        #timer {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .time-box {
+            display: flex;
+            flex-direction: column;
+            min-width: 80px;
+        }
+
+        .number {
+            font-size: 3.5rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body>
-  
+
+    <div class="snow-layer layer1"></div>
+    <div class="snow-layer layer2"></div>
+    <div class="snow-layer layer3"></div>
+    <div class="sleigh">🛷🎅🦌🦌</div>
+
+    <div class="container">
+        <h1>Christmas Eve Ends In...</h1>
+        <div id="timer">
+            <div class="time-box">
+                <span class="number" id="days">00</span>
+                <span class="label">Days</span>
+            </div>
+            <div class="time-box">
+                <span class="number" id="hours">00</span>
+                <span class="label">Hours</span>
+            </div>
+            <div class="time-box">
+                <span class="number" id="minutes">00</span>
+                <span class="label">Mins</span>
+            </div>
+            <div class="time-box">
+                <span class="number" id="seconds">00</span>
+                <span class="label">Secs</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateCountdown() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            
+            // Set target to Dec 25th at 00:00:00
+            let christmas = new Date(`December 25, ${currentYear} 00:00:00`);
+
+            // If today is after Dec 25, point to next year's Christmas
+            if (now > christmas) {
+                christmas = new Date(`December 25, ${currentYear + 1} 00:00:00`);
+            }
+
+            const diff = christmas - now;
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = d;
+            document.getElementById('hours').innerText = h < 10 ? '0' + h : h;
+            document.getElementById('minutes').innerText = m < 10 ? '0' + m : m;
+            document.getElementById('seconds').innerText = s < 10 ? '0' + s : s;
+        }
+
+        // Run immediately and then every second
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
 </body>
 </html>
