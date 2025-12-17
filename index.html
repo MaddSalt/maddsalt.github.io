@@ -3,173 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Christmas Countdown</title>
-    <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <title>OPERATION SALTY REINDEER | MISSION CLOCK</title>
     <style>
         :root {
-            --gold: #f9d71c;
-            --snow-white: rgba(255, 255, 255, 0.8);
+            --agency-green: #00ff41;
+            --terminal-bg: #050505;
+            --scanline-color: rgba(0, 255, 65, 0.05);
         }
 
         body, html {
+            background-color: var(--terminal-bg);
+            color: var(--agency-green);
+            font-family: 'Courier New', Courier, monospace;
+            height: 100vh;
             margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
             overflow: hidden;
-            background: linear-gradient(to bottom, #00152b 0%, #003366 100%);
-            font-family: 'Poppins', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: white;
         }
 
-        /* --- Sleigh Animation --- */
-        .sleigh {
-            position: absolute;
-            top: 15%;
-            font-size: 4rem;
-            z-index: 10;
-            white-space: nowrap;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-            animation: flyAcross 12s linear infinite;
-            pointer-events: none;
-        }
-
-        @keyframes flyAcross {
-            0% { left: -20%; transform: rotate(-5deg); }
-            25% { transform: translateY(-30px) rotate(0deg); }
-            50% { transform: translateY(0px) rotate(5deg); }
-            75% { transform: translateY(-30px) rotate(0deg); }
-            100% { left: 120%; transform: rotate(-5deg); }
-        }
-
-        /* --- Parallax Snow --- */
-        .snow-layer {
+        /* --- CRT Effects --- */
+        .crt-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(var(--scanline-color) 50%, transparent 50%);
+            background-size: 100% 4px;
+            z-index: 100;
             pointer-events: none;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
-                radial-gradient(3px 3px at 40px 70px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0));
-            background-repeat: repeat;
+            opacity: 0.3;
         }
 
-        .layer1 { background-size: 200px 200px; animation: fall 10s linear infinite; opacity: 0.8; }
-        .layer2 { background-size: 300px 300px; animation: fall 15s linear infinite; opacity: 0.5; }
-        .layer3 { background-size: 500px 500px; animation: fall 20s linear infinite; opacity: 0.3; }
-
-        @keyframes fall {
-            from { background-position: 0 0; }
-            to { background-position: 100px 1000px; }
+        .flicker {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(18, 16, 16, 0.1);
+            opacity: 0;
+            z-index: 101;
+            pointer-events: none;
+            animation: flicker 0.15s infinite;
         }
 
-        /* --- Countdown Container --- */
-        .container {
-            text-align: center;
-            z-index: 20;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 3rem;
-            border-radius: 20px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        @keyframes flicker {
+            0% { opacity: 0.1; }
+            100% { opacity: 0.02; }
+        }
+
+        /* --- Stealth Sleigh (Adversary Signature) --- */
+        .stealth-sleigh {
+            position: absolute;
+            top: 12%;
+            font-size: 2.2rem;
+            filter: sepia(100%) saturate(500%) hue-rotate(70deg) brightness(0.5);
+            animation: patrol 22s linear infinite;
+            white-space: nowrap;
+            z-index: 1;
+        }
+
+        @keyframes patrol {
+            0% { left: -25%; transform: translateY(0) scaleX(1); }
+            49% { transform: translateY(-20px) scaleX(1); }
+            50% { transform: translateY(-20px) scaleX(-1); }
+            100% { left: 115%; transform: translateY(0) scaleX(-1); }
+        }
+
+        /* --- Mission Frame --- */
+        .mission-frame {
+            border: 1px solid var(--agency-green);
+            padding: 40px;
+            width: 85%;
+            max-width: 850px;
+            background: rgba(0, 15, 0, 0.95);
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.15);
+            position: relative;
+            z-index: 10;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            border-bottom: 1px solid var(--agency-green);
+            padding-bottom: 8px;
+            margin-bottom: 25px;
+            opacity: 0.8;
         }
 
         h1 {
-            font-family: 'Mountains of Christmas', cursive;
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            color: #e63946;
-            text-shadow: 2px 2px 0px #fff;
+            font-size: 2.4rem;
+            margin: 0;
+            letter-spacing: 8px;
+            text-align: center;
+            color: white;
+            text-shadow: 0 0 12px var(--agency-green);
         }
 
-        #timer {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
+        .location-tag {
+            text-align: center;
+            margin: 12px 0;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            color: rgba(0, 255, 65, 0.6);
         }
 
-        .time-box {
+        /* --- The Clock --- */
+        .countdown-display {
             display: flex;
-            flex-direction: column;
-            min-width: 80px;
+            justify-content: space-around;
+            margin: 45px 0;
+        }
+
+        .time-unit {
+            text-align: center;
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            padding: 15px;
+            min-width: 100px;
         }
 
         .number {
-            font-size: 3.5rem;
-            font-weight: 600;
-            color: var(--gold);
+            font-size: 3.8rem;
+            font-weight: 900;
+            display: block;
+            color: white;
         }
 
         .label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
+            font-size: 0.7rem;
             letter-spacing: 2px;
-            opacity: 0.8;
+            color: var(--agency-green);
+            margin-top: 5px;
         }
+
+        .footer-status {
+            border-top: 1px dashed var(--agency-green);
+            padding-top: 20px;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        .blink { animation: blinker 1.5s step-end infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
+
+        .glitch-text { color: #fff; text-shadow: 1px 1px var(--agency-green); }
+
     </style>
 </head>
 <body>
 
-    <div class="snow-layer layer1"></div>
-    <div class="snow-layer layer2"></div>
-    <div class="snow-layer layer3"></div>
-    <div class="sleigh">🛷🎅🦌🦌</div>
+    <div class="crt-overlay"></div>
+    <div class="flicker"></div>
+    
+    <div class="stealth-sleigh">🛷 🦌 🦌 🦌</div>
 
-    <div class="container">
-        <h1>Maddox's Yearly Gift Hunts Begin In....</h1>
-        <div id="timer">
-            <div class="time-box">
+    <div class="mission-frame">
+        <div class="top-nav">
+            <span>UPLINK: ACTIVE</span>
+            <span id="zulu-time">ZULU: --:--:--</span>
+        </div>
+
+        <h1 class="glitch-text">OPERATION SALTY REINDEER</h1>
+        <div class="location-tag">SECTOR: EASTWOOD // MADISON, WI</div>
+
+        <div class="countdown-display">
+            <div class="time-unit">
                 <span class="number" id="days">00</span>
-                <span class="label">Days</span>
+                <span class="label">DAYS</span>
             </div>
-            <div class="time-box">
+            <div class="time-unit">
                 <span class="number" id="hours">00</span>
-                <span class="label">Hours</span>
+                <span class="label">HRS</span>
             </div>
-            <div class="time-box">
+            <div class="time-unit">
                 <span class="number" id="minutes">00</span>
-                <span class="label">Mins</span>
+                <span class="label">MINS</span>
             </div>
-            <div class="time-box">
+            <div class="time-unit">
                 <span class="number" id="seconds">00</span>
-                <span class="label">Secs</span>
+                <span class="label">SECS</span>
             </div>
+        </div>
+
+        <div class="footer-status">
+            <p>> TARGET WINDOW: 23DEC2025 - 25DEC2025</p>
+            <p>> EXTRACTION DEADLINE: 25DEC2025 // 23:59:59</p>
+            <p>> STATUS: <span class="blink">INTERCEPTING ADVERSARY DATA STREAMS...</span></p>
         </div>
     </div>
 
     <script>
-        function updateCountdown() {
+        function updateMissionClock() {
             const now = new Date();
-            const currentYear = now.getFullYear();
             
-            // Set target to Dec 25th at 00:00:00
-            let christmas = new Date(`December 25, ${currentYear} 00:00:00`);
+            // Live Zulu Time (UTC)
+            document.getElementById('zulu-time').innerText = "ZULU: " + now.getUTCHours().toString().padStart(2, '0') + ":" + 
+                                                              now.getUTCMinutes().toString().padStart(2, '0') + ":" + 
+                                                              now.getUTCSeconds().toString().padStart(2, '0');
 
-            // If today is after Dec 25, point to next year's Christmas
-            if (now > christmas) {
-                christmas = new Date(`December 25, ${currentYear + 1} 00:00:00`);
+            // Extraction Deadline: Dec 25, 2025 at 23:59:59
+            const target = new Date("December 25, 2025 23:59:59").getTime();
+            const diff = target - now.getTime();
+
+            if (diff <= 0) {
+                document.querySelector('.footer-status').innerHTML = "<p style='color:red'>> EXTRACTION WINDOW CLOSED // MISSION ABORTED</p>";
+                document.getElementById('days').innerText = "00";
+                document.getElementById('hours').innerText = "00";
+                document.getElementById('minutes').innerText = "00";
+                document.getElementById('seconds').innerText = "00";
+                return;
             }
-
-            const diff = christmas - now;
 
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const s = Math.floor((diff % (1000 * 60)) / 1000);
 
-            document.getElementById('days').innerText = d;
-            document.getElementById('hours').innerText = h < 10 ? '0' + h : h;
-            document.getElementById('minutes').innerText = m < 10 ? '0' + m : m;
-            document.getElementById('seconds').innerText = s < 10 ? '0' + s : s;
+            document.getElementById('days').innerText = d.toString().padStart(2, '0');
+            document.getElementById('hours').innerText = h.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = m.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = s.toString().padStart(2, '0');
         }
 
-        // Run immediately and then every second
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
+        setInterval(updateMissionClock, 1000);
+        updateMissionClock();
     </script>
 </body>
 </html>
