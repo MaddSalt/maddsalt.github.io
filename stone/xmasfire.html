@@ -26,7 +26,7 @@
 
             /* --- NEW BACKGROUND IMAGE --- */
             /* Make sure the image file is in the same folder and named correctly! */
-            background-image: url('../tactical_map.png');
+            background-image: url('../house.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -176,7 +176,7 @@
         
         <div class="content-padding">
             <div id="loader">
-                <p>>  BOOTING SALTZMAN TERMINAL...</p>
+                <p>> BOOTING STONE TERMINAL...</p>
                 <p id="load-step-1" style="display:none">> SCANNING EASTWOOD SECTOR HEAT SIGNATURES... [NEGATIVE]</p>
                 <p id="load-step-2" style="display:none">> ESTABLISHING SECURE CONNECTION TO SLEIGH...</p>
                 <p id="load-step-3" style="display:none">> MISSION BRIEFING DECRYPTED.</p>
@@ -199,9 +199,9 @@
     <script>
         // --- CONFIGURATION ---
         // Replace this text with your actual first clue!
-        const clueString = "Agent Deanne, our intel suggests the next key is hidden in a novel written by Michael Lewis. Radio transmissions indicate it was released in 2010 or 2011. Good luck...";
+        const clueString = "Agent Stone, intelligence assets detected a hijacked street sweeper being used to transport covert keys. Locate the street sweeper and find the key.";
 
-        const SECRET_HASH = "b6883f68381a284a90095fa870c745d2a2d70af406f51dab45dc96b0c8c192f1";
+        const SECRET_HASH = "a4e488dd3e7fe3312bbda52866c91ef695c1e05f086851676f392b3f1e59a21d";
 
         // --- LOADING SEQUENCE ---
         window.onload = function() {
@@ -258,7 +258,7 @@
             inputField.disabled = true;
 
             setTimeout(() => {
-                window.location.href = "https://www.maddsalt.com/mom/northpole.html"; 
+                window.location.href = "https://www.maddsalt.com/stone/football.html"; 
             }, 3000);
 
         } else {

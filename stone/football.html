@@ -26,7 +26,7 @@
 
             /* --- NEW BACKGROUND IMAGE --- */
             /* Make sure the image file is in the same folder and named correctly! */
-            background-image: url('../tactical_map.png');
+            background-image: url('../reindeer.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -176,7 +176,7 @@
         
         <div class="content-padding">
             <div id="loader">
-                <p>>  BOOTING SALTZMAN TERMINAL...</p>
+                <p>>  BOOTING STONE TERMINAL...</p>
                 <p id="load-step-1" style="display:none">> SCANNING EASTWOOD SECTOR HEAT SIGNATURES... [NEGATIVE]</p>
                 <p id="load-step-2" style="display:none">> ESTABLISHING SECURE CONNECTION TO SLEIGH...</p>
                 <p id="load-step-3" style="display:none">> MISSION BRIEFING DECRYPTED.</p>
@@ -185,13 +185,6 @@
             <div id="mission-content" style="display:none">
                 <p style="color:var(--elf-gold); margin-top:0;">[ PRIORITY: FLASH MESSAGE ]</p>
                 <div id="typewriter" class="clue-text"></div>
-                
-                <div class="input-area" id="input-zone" style="display:none">
-                    <p>> ENTER RECOVERY KEY FOUND IN FIELD:</p>
-                    <input type="text" id="agent-input" autocomplete="off" placeholder="********">
-                    <button class="btn" onclick="verifyKey()">Submit Auth</button>
-                    <div id="result-msg"></div>
-                </div>
             </div>
         </div>
     </div>
@@ -199,9 +192,7 @@
     <script>
         // --- CONFIGURATION ---
         // Replace this text with your actual first clue!
-        const clueString = "Agent Deanne, our intel suggests the next key is hidden in a novel written by Michael Lewis. Radio transmissions indicate it was released in 2010 or 2011. Good luck...";
-
-        const SECRET_HASH = "b6883f68381a284a90095fa870c745d2a2d70af406f51dab45dc96b0c8c192f1";
+        const clueString = "Nice work. Agents have discovered a potential life saving device located in a remote region of 226 guarded by an adversary wearing a number 5 LSU jersey. Locate the adversary and extract the device.";
 
         // --- LOADING SEQUENCE ---
         window.onload = function() {
@@ -231,48 +222,6 @@
             }
             type();
         }
-
-        // --- HASH VERIFICATION ---
-        async function verifyKey() {
-        const inputField = document.getElementById('agent-input');
-        const resultMsg = document.getElementById('result-msg');
-        const terminalBox = document.querySelector('.terminal-box');
-        
-        // Clear previous error state
-        terminalBox.classList.remove('shake');
-        resultMsg.innerText = "";
-
-        const rawInput = inputField.value.trim().normalize("NFC");
-        
-        const msgBuffer = new TextEncoder().encode(rawInput);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-        if (hashHex === SECRET_HASH) {
-            resultMsg.style.color = "var(--agency-green)";
-            resultMsg.innerText = "ACCESS GRANTED. MERRY CHRISTMAS, AGENT. STAND BY FOR NEW INTEL...";
-            resultMsg.style.textShadow = "0 0 10px var(--agency-green)";
-            
-            // Disable input during redirect to prevent double-entry
-            inputField.disabled = true;
-
-            setTimeout(() => {
-                window.location.href = "https://www.maddsalt.com/mom/northpole.html"; 
-            }, 3000);
-
-        } else {
-            // FAIL STATE
-            terminalBox.classList.add('shake');
-            resultMsg.style.color = "var(--tactical-red)";
-            resultMsg.innerText = "ERR: INVALID AUTH KEY. ADVERSARY DETECTED. TRY AGAIN.";
-            resultMsg.style.textShadow = "0 0 10px var(--tactical-red)";
-            
-            // Clear the field and refocus so they can type immediately
-            inputField.value = "";
-            inputField.focus();
-        }
-    }
     </script>
 </body>
 </html>
