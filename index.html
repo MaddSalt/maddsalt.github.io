@@ -3,35 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OPERATION SALTY REINDEER | MISSION CLOCK</title>
+    <title>TERMINAL | OPERATION SALTY REINDEER</title>
     <style>
         :root {
             --agency-green: #00ff41;
-            --terminal-bg: #050505;
+            --tactical-red: #ff0000;
+            --elf-gold: #d4af37;
+            --terminal-bg: #020d03;
             --scanline-color: rgba(0, 255, 65, 0.05);
         }
 
         body, html {
-            background-color: var(--terminal-bg);
-            color: var(--agency-green);
-            font-family: 'Courier New', Courier, monospace;
             height: 100vh;
             margin: 0;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
+            background-color: var(--terminal-bg);
+            color: var(--agency-green);
+            font-family: 'Courier New', Courier, monospace;
+            /* If you have the tactical sleigh image, uncomment the line below */
+            /* background-image: url('tacticalsleigh.jpg'); */
+            background-size: cover;
+            background-position: center;
         }
 
-        /* --- CRT Effects --- */
+        /* --- CRT & UI Effects --- */
         .crt-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(var(--scanline-color) 50%, transparent 50%);
-            background-size: 100% 4px;
+            background: linear-gradient(var(--scanline-color) 50%, transparent 50%),
+                        radial-gradient(rgba(0, 255, 65, 0.05), rgba(0, 0, 0, 0.5));
+            background-size: 100% 4px, 100% 100%;
             z-index: 100;
             pointer-events: none;
-            opacity: 0.3;
         }
 
         .flicker {
@@ -49,102 +55,124 @@
             100% { opacity: 0.02; }
         }
 
-        /* --- Stealth Sleigh (Adversary Signature) --- */
+        /* --- Stealth Sleigh Animation --- */
         .stealth-sleigh {
             position: absolute;
-            top: 12%;
-            font-size: 2.2rem;
-            filter: sepia(100%) saturate(500%) hue-rotate(70deg) brightness(0.5);
-            animation: patrol 22s linear infinite;
+            top: 10%;
+            font-size: 2rem;
+            filter: sepia(100%) saturate(500%) hue-rotate(70deg) brightness(0.6);
+            animation: patrol 25s linear infinite;
             white-space: nowrap;
             z-index: 1;
         }
 
         @keyframes patrol {
-            0% { left: -25%; transform: translateY(0) scaleX(1); }
-            49% { transform: translateY(-20px) scaleX(1); }
-            50% { transform: translateY(-20px) scaleX(-1); }
-            100% { left: 115%; transform: translateY(0) scaleX(-1); }
+            0% { left: -20%; transform: scaleX(1); }
+            49% { transform: scaleX(1); }
+            50% { transform: scaleX(-1); }
+            100% { left: 110%; transform: scaleX(-1); }
         }
 
-        /* --- Mission Frame --- */
+        /* --- Main Terminal Frame --- */
         .mission-frame {
-            border: 1px solid var(--agency-green);
-            padding: 40px;
-            width: 85%;
-            max-width: 850px;
-            background: rgba(0, 15, 0, 0.95);
-            box-shadow: 0 0 40px rgba(0, 255, 65, 0.15);
+            border: 2px solid var(--agency-green);
+            padding: 30px;
+            width: 90%;
+            max-width: 800px;
+            background: rgba(0, 15, 0, 0.9);
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.2);
             position: relative;
             z-index: 10;
         }
 
-        .top-nav {
+        .header-nav {
             display: flex;
             justify-content: space-between;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             border-bottom: 1px solid var(--agency-green);
-            padding-bottom: 8px;
-            margin-bottom: 25px;
-            opacity: 0.8;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
         }
 
         h1 {
-            font-size: 2.4rem;
-            margin: 0;
-            letter-spacing: 8px;
             text-align: center;
+            letter-spacing: 5px;
             color: white;
-            text-shadow: 0 0 12px var(--agency-green);
+            text-shadow: 0 0 10px var(--agency-green);
+            margin: 10px 0;
         }
 
-        .location-tag {
-            text-align: center;
-            margin: 12px 0;
-            font-size: 0.9rem;
-            letter-spacing: 3px;
-            color: rgba(0, 255, 65, 0.6);
-        }
-
-        /* --- The Clock --- */
-        .countdown-display {
+        /* --- Countdown Clock --- */
+        .countdown-container {
             display: flex;
             justify-content: space-around;
-            margin: 45px 0;
+            margin: 30px 0;
         }
 
-        .time-unit {
+        .time-box {
             text-align: center;
-            border: 1px solid rgba(0, 255, 65, 0.2);
-            padding: 15px;
-            min-width: 100px;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            padding: 10px;
+            min-width: 80px;
         }
 
-        .number {
-            font-size: 3.8rem;
-            font-weight: 900;
-            display: block;
+        .num { font-size: 3rem; font-weight: bold; color: white; display: block; }
+        .lab { font-size: 0.7rem; color: var(--agency-green); }
+
+        /* --- Input Module --- */
+        .input-module {
+            border: 1px solid var(--agency-green);
+            padding: 20px;
+            margin: 20px 0;
+            background: rgba(0, 40, 0, 0.3);
+            text-align: center;
+        }
+
+        input {
+            background: #000;
+            border: 1px solid var(--agency-green);
+            color: #fff;
+            padding: 12px;
+            font-family: inherit;
+            width: 60%;
+            outline: none;
+            font-size: 1rem;
+            box-shadow: inset 0 0 5px var(--agency-green);
+        }
+
+        .btn {
+            background: var(--tactical-red);
             color: white;
+            border: 1px solid var(--elf-gold);
+            padding: 12px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.3s;
         }
 
-        .label {
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            color: var(--agency-green);
-            margin-top: 5px;
+        .btn:hover {
+            background: #cc0000;
+            box-shadow: 0 0 15px var(--tactical-red);
         }
 
-        .footer-status {
+        .footer-info {
+            font-size: 0.8rem;
             border-top: 1px dashed var(--agency-green);
-            padding-top: 20px;
-            font-size: 0.85rem;
-            line-height: 1.6;
+            padding-top: 15px;
+            color: var(--elf-gold);
+        }
+
+        /* --- Animations --- */
+        .shake { animation: shake 0.4s ease-in-out; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
         }
 
         .blink { animation: blinker 1.5s step-end infinite; }
         @keyframes blinker { 50% { opacity: 0; } }
-
-        .glitch-text { color: #fff; text-shadow: 1px 1px var(--agency-green); }
 
     </style>
 </head>
@@ -152,79 +180,98 @@
 
     <div class="crt-overlay"></div>
     <div class="flicker"></div>
-    
     <div class="stealth-sleigh">🛷 🦌 🦌 🦌</div>
 
     <div class="mission-frame">
-        <div class="top-nav">
-            <span>UPLINK: ACTIVE</span>
-            <span id="zulu-time">ZULU: --:--:--</span>
+        <div class="header-nav">
+            <span>UPLINK: ACTIVE // ENCRYPTED</span>
+            <span id="zulu-clock">ZULU: --:--:--</span>
         </div>
 
-        <h1 class="glitch-text">OPERATION SALTY REINDEER</h1>
-        <div class="location-tag">SECTOR: EASTWOOD // MADISON, MS</div>
+        <h1>OPERATION SALTY REINDEER</h1>
+        <p style="text-align: center; font-size: 0.8rem; opacity: 0.7;">SECTOR: EASTWOOD // MADISON, MS</p>
 
-        <div class="countdown-display">
-            <div class="time-unit">
-                <span class="number" id="days">00</span>
-                <span class="label">DAYS</span>
-            </div>
-            <div class="time-unit">
-                <span class="number" id="hours">00</span>
-                <span class="label">HRS</span>
-            </div>
-            <div class="time-unit">
-                <span class="number" id="minutes">00</span>
-                <span class="label">MINS</span>
-            </div>
-            <div class="time-unit">
-                <span class="number" id="seconds">00</span>
-                <span class="label">SECS</span>
-            </div>
+        <div class="countdown-container">
+            <div class="time-box"><span class="num" id="d">00</span><span class="lab">DAYS</span></div>
+            <div class="time-box"><span class="num" id="h">00</span><span class="lab">HRS</span></div>
+            <div class="time-box"><span class="num" id="m">00</span><span class="lab">MINS</span></div>
+            <div class="time-box"><span class="num" id="s">00</span><span class="lab">SECS</span></div>
         </div>
 
-        <div class="footer-status">
+        <div class="input-module">
+            <p style="margin-top: 0; font-size: 0.9rem;">> ENTER AGENT AUTHORIZATION KEY:</p>
+            <input type="text" id="mission-code" placeholder="ENTER CODE..." autocomplete="off">
+            <button class="btn" onclick="verifyMissionCode()">DECRYPT</button>
+            <div id="status-msg" style="margin-top: 15px; font-weight: bold; height: 1.2em;"></div>
+        </div>
+
+        <div class="footer-info">
+            <p>> STATUS: <span class="blink">MONITORING AIRSPACE...</span></p>
             <p>> TARGET WINDOW: 23DEC2025 - 25DEC2025</p>
-            <p>> EXTRACTION DEADLINE: 25DEC2025 // 23:59:59</p>
-            <p>> STATUS: <span class="blink">INTERCEPTING ADVERSARY DATA STREAMS...</span></p>
         </div>
     </div>
 
     <script>
-        function updateMissionClock() {
+        // --- REDIRECT DATABASE ---
+        const MISSION_MANIFEST = {
+            "deanne226xmas": "https://www.maddsalt.com/mom/santa.html",
+            "ricky226elf": "https://www.maddsalt.com/mom/elf.html",
+            "stone226": "https://www.maddsalt.com/stone/xmasfish.html",
+            "ryker226search": "https://www.maddsalt.com/ryker/merry.html"
+        };
+
+        function updateClocks() {
             const now = new Date();
             
-            // Live Zulu Time (UTC)
-            document.getElementById('zulu-time').innerText = "ZULU: " + now.getUTCHours().toString().padStart(2, '0') + ":" + 
-                                                              now.getUTCMinutes().toString().padStart(2, '0') + ":" + 
-                                                              now.getUTCSeconds().toString().padStart(2, '0');
+            // Zulu Time
+            document.getElementById('zulu-clock').innerText = "ZULU: " + 
+                now.getUTCHours().toString().padStart(2, '0') + ":" + 
+                now.getUTCMinutes().toString().padStart(2, '0') + ":" + 
+                now.getUTCSeconds().toString().padStart(2, '0');
 
-            // Extraction Deadline: Dec 25, 2025 at 23:59:59
+            // Countdown to Christmas Night
             const target = new Date("December 25, 2025 23:59:59").getTime();
             const diff = target - now.getTime();
 
             if (diff <= 0) {
-                document.querySelector('.footer-status').innerHTML = "<p style='color:red'>> EXTRACTION WINDOW CLOSED // MISSION ABORTED</p>";
-                document.getElementById('days').innerText = "00";
-                document.getElementById('hours').innerText = "00";
-                document.getElementById('minutes').innerText = "00";
-                document.getElementById('seconds').innerText = "00";
+                document.querySelector('.countdown-container').innerHTML = "<h2 style='color:red'>MISSION WINDOW CLOSED</h2>";
                 return;
             }
 
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000);
-
-            document.getElementById('days').innerText = d.toString().padStart(2, '0');
-            document.getElementById('hours').innerText = h.toString().padStart(2, '0');
-            document.getElementById('minutes').innerText = m.toString().padStart(2, '0');
-            document.getElementById('seconds').innerText = s.toString().padStart(2, '0');
+            document.getElementById('d').innerText = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+            document.getElementById('h').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+            document.getElementById('m').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            document.getElementById('s').innerText = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
         }
 
-        setInterval(updateMissionClock, 1000);
-        updateMissionClock();
+        function verifyMissionCode() {
+            const input = document.getElementById('mission-code');
+            const status = document.getElementById('status-msg');
+            const frame = document.querySelector('.mission-frame');
+            const code = input.value.trim().toLowerCase();
+
+            if (MISSION_MANIFEST[code]) {
+                status.style.color = "var(--agency-green)";
+                status.innerText = "AUTH SUCCESS. DIVERTING UPLINK...";
+                setTimeout(() => {
+                    window.location.href = MISSION_MANIFEST[code];
+                }, 2000);
+            } else {
+                frame.classList.add('shake');
+                status.style.color = "var(--tactical-red)";
+                status.innerText = "ERR: UNAUTHORIZED CODE NAME.";
+                input.value = "";
+                setTimeout(() => { frame.classList.remove('shake'); }, 400);
+            }
+        }
+
+        // Support for Enter Key
+        document.getElementById('mission-code').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') verifyMissionCode();
+        });
+
+        setInterval(updateClocks, 1000);
+        updateClocks();
     </script>
 </body>
 </html>
