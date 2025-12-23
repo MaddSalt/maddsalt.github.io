@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERMINAL | OPERATION SALTY REINDEER</title>
+    <style>
+        :root {
+            --agency-green: #00ff41;
+            --tactical-red: #ff0000;
+            --elf-gold: #d4af37;
+            /* A dark overlay color to make the terminal readable against the map */
+            --terminal-bg-overlay: rgba(0, 15, 0, 0.85); 
+        }
+
+        body, html {
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #020d03;
+            color: var(--agency-green);
+            font-family: 'Courier New', Courier, monospace;
+
+            /* --- NEW BACKGROUND IMAGE --- */
+            /* Make sure the image file is in the same folder and named correctly! */
+            background-image: url('../tacticalsleigh.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* --- Scanline & Darkening Overlay --- */
+        /* This helps text pop against the busy map background */
+        .crt-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* We lightened the second part of the gradient so the map peeks through more */
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        radial-gradient(rgba(0, 255, 65, 0.05), rgba(0, 0, 0, 0.4));
+            background-size: 100% 4px, 100% 100%;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .terminal-box {
+            border: 2px solid var(--agency-green);
+            padding: 0;
+            width: 90%;
+            max-width: 700px;
+            /* Made slightly more opaque for readability */
+            background: rgba(0, 15, 0, 0.95);
+            box-shadow: 0 0 50px rgba(0, 255, 65, 0.3), inset 0 0 20px rgba(0, 255, 65, 0.1);
+            position: relative;
+            overflow: hidden;
+            z-index: 101; /* Ensure terminal sits above the CRT overlay */
+        }
+
+        /* --- Prep & Landing Header --- */
+        .terminal-header {
+            background: var(--agency-green);
+            color: black;
+            padding: 5px 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .content-padding {
+            padding: 30px;
+        }
+
+        /* --- Clue Content --- */
+        .clue-text {
+            color: #fff;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            min-height: 100px;
+            font-size: 1.1rem;
+            text-shadow: 0 0 5px rgba(255,255,255,0.2);
+        }
+
+        .input-area {
+            border-top: 1px solid var(--agency-green);
+            padding-top: 20px;
+            position: relative;
+        }
+
+        .input-area::before {
+            content: "DECRYPTION MODULE ACTIVE";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--terminal-bg-overlay);
+            padding: 0 10px;
+            font-size: 0.7rem;
+            color: var(--elf-gold);
+            border: 1px solid var(--agency-green);
+        }
+
+        input {
+            background: rgba(0, 255, 65, 0.05);
+            border: 1px solid var(--agency-green);
+            color: white;
+            font-family: inherit;
+            font-size: 1.2rem;
+            width: calc(100% - 22px);
+            padding: 10px;
+            outline: none;
+            margin: 15px 0 10px 0;
+            box-shadow: inset 0 0 5px rgba(0, 255, 65, 0.2);
+        }
+
+        .btn {
+            background: var(--tactical-red);
+            color: white;
+            border: 1px solid var(--elf-gold);
+            padding: 12px 25px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.2s;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+        }
+
+        .btn:hover {
+            background: #cc0000;
+            box-shadow: 0 0 20px var(--tactical-red);
+        }
+
+        #result-msg {
+            margin-top: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            min-height: 20px;
+        }
+
+        /* Tactical Emoji */
+        .tactical-icon {
+            font-size: 1.2rem;
+            filter: drop-shadow(0 0 5px var(--agency-green));
+        }
+
+        #loader p { margin: 10px 0; }
+        /* Animation for incorrect entry */
+        .shake {
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="crt-overlay"></div>
+
+    <div class="terminal-box">
+        <div class="terminal-header">
+            <span>UPLINK: NORTH POLE // SECURE_CHANNEL</span>
+            <span class="tactical-icon">🎄🛰️</span>
+        </div>
+        
+        <div class="content-padding">
+            <div id="loader">
+                <p>> BOOTING RICKY TERMINAL...</p>
+                <p id="load-step-1" style="display:none">> SCANNING EASTWOOD SECTOR HEAT SIGNATURES... [NEGATIVE]</p>
+                <p id="load-step-2" style="display:none">> ESTABLISHING SECURE CONNECTION TO SLEIGH...</p>
+                <p id="load-step-3" style="display:none">> MISSION BRIEFING DECRYPTED.</p>
+            </div>
+
+            <div id="mission-content" style="display:none">
+                <p style="color:var(--elf-gold); margin-top:0;">[ PRIORITY: FLASH MESSAGE ]</p>
+                <div id="typewriter" class="clue-text"></div>
+                
+                <div class="input-area" id="input-zone" style="display:none">
+                    <p>> ENTER RECOVERY KEY FOUND IN FIELD:</p>
+                    <input type="text" id="agent-input" autocomplete="off" placeholder="********">
+                    <button class="btn" onclick="verifyKey()">Submit Auth</button>
+                    <div id="result-msg"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        // Replace this text with your actual first clue!
+        const clueString = "Agent Ricky, intel analysts suggest the adversary is using printers to hide and conceal messages. We suggest you start there...";
+
+        // Keep your working hash for 'xMaSCooKies'
+        const SECRET_HASH = "7255ea81bb28187629cc809bb128640e1ab06c8cfff82f632588b806d97a0e7d";
+
+        // --- LOADING SEQUENCE ---
+        window.onload = function() {
+            setTimeout(() => { document.getElementById('load-step-1').style.display = 'block'; }, 800);
+            setTimeout(() => { document.getElementById('load-step-2').style.display = 'block'; }, 1600);
+            setTimeout(() => { document.getElementById('load-step-3').style.display = 'block'; }, 2400);
+            setTimeout(() => { 
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('mission-content').style.display = 'block';
+                startTypewriter();
+            }, 3200);
+        };
+
+        // --- TYPEWRITER EFFECT ---
+        function startTypewriter() {
+            let i = 0;
+            const speed = 30; // Adjust typing speed here
+            const container = document.getElementById("typewriter");
+            function type() {
+                if (i < clueString.length) {
+                    container.innerHTML += clueString.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    document.getElementById('input-zone').style.display = 'block';
+                }
+            }
+            type();
+        }
+
+        // --- HASH VERIFICATION ---
+        async function verifyKey() {
+        const inputField = document.getElementById('agent-input');
+        const resultMsg = document.getElementById('result-msg');
+        const terminalBox = document.querySelector('.terminal-box');
+        
+        // Clear previous error state
+        terminalBox.classList.remove('shake');
+        resultMsg.innerText = "";
+
+        const rawInput = inputField.value.trim().normalize("NFC");
+        
+        const msgBuffer = new TextEncoder().encode(rawInput);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+        if (hashHex === SECRET_HASH) {
+            resultMsg.style.color = "var(--agency-green)";
+            resultMsg.innerText = "ACCESS GRANTED. MERRY CHRISTMAS, AGENT. STAND BY FOR NEW INTEL...";
+            resultMsg.style.textShadow = "0 0 10px var(--agency-green)";
+            
+            // Disable input during redirect to prevent double-entry
+            inputField.disabled = true;
+
+            setTimeout(() => {
+                window.location.href = "https://www.maddsalt.com/dad/hotchocolate.html"; 
+            }, 3000);
+
+        } else {
+            // FAIL STATE
+            terminalBox.classList.add('shake');
+            resultMsg.style.color = "var(--tactical-red)";
+            resultMsg.innerText = "ERR: INVALID AUTH KEY. ADVERSARY DETECTED. TRY AGAIN.";
+            resultMsg.style.textShadow = "0 0 10px var(--tactical-red)";
+            
+            // Clear the field and refocus so they can type immediately
+            inputField.value = "";
+            inputField.focus();
+        }
+    }
+    </script>
+</body>
+</html>
